@@ -5,36 +5,29 @@
 
 namespace bf {
 namespace atomic {
-void* CompareExchangePointer(volatile void** d, void* e, void* c)
-{
+void* compare_exchange_pointer(volatile void** d, void* e, void* c) {
 	return __sync_val_compare_and_swap((void**)d, c, e);
 }
 
-long CompareExchange(volatile long* d, long e, long c)
-{
+long compare_exchange(volatile long* d, long e, long c) {
 	return __sync_val_compare_and_swap(d, c, e);
 }
 
-long Increment(volatile long* v)
-{
+long increment(volatile long* v) {
 	return __sync_add_and_fetch(v, 1);
 }
 
-long Decrement(volatile long* v)
-{
+long decrement(volatile long* v) {
 	return __sync_sub_and_fetch(v, 1);
 }
 
-long Add(volatile long* v, long d)
-{
+long add(volatile long* v, long d) {
 	return __sync_add_and_fetch(v, d);
 }
 
-long Max(volatile long* a, long b)
-{
+long max(volatile long* a, long b) {
 	long n, o;
-	do
-	{
+	do {
 		PAUSE();
 		o = *a;
 
@@ -43,21 +36,19 @@ long Max(volatile long* a, long b)
 		else
 			n = o;
 
-	} while (CompareExchange(a, n, o) != o);
+	} while (compare_exchange(a, n, o) != o);
 
 	return *a;
 }
 
-long Exchange(volatile long* d, long v)
-{
+long exchange(volatile long* d, long v) {
 	long n, o;
-	do
-	{
+	do {
 		PAUSE();
 		o = *d;
 		n = v;
 
-	} while (CompareExchange(d, n, o != o);
+	} while (compare_exchange(d, n, o != o);
 
 	return o;
 }

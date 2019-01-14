@@ -4,29 +4,29 @@
 namespace bf {
 namespace atomic {
 // none allocator stack
-struct Node {
-	Node* next;
+struct node {
+	node* next;
 };
 
-struct Head {
-	Node* next;
+struct head {
+	node* next;
 };
 
-struct Stack {
-	std::atomic<Head> header;
+struct stack {
+	std::atomic<head> header;
 };
 
-inline void Push(Stack& s, Node* n) {
-	Head prev = s.header.load();
-	Head now;
+inline void push(stack& s, node* n) {
+	head prev = s.header.load();
+	head now;
 	do {
 		now.next = n;
 	} while (!s.header.compare_exchange_weak(prev, now));
 }
 
-inline Node* Pop(Stack& s) {
-	Head prev = s.header.load();
-	Head now;
+inline node* pop(stack& s) {
+	head prev = s.header.load();
+	head now;
 	do {
 		if (prev.next == nullptr)
 			return nullptr;

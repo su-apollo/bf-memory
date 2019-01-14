@@ -7,67 +7,65 @@
 #include <cassert>
 
 namespace bf {
-struct MallocInfo : atomic::Node {
-	MallocInfo(int size) : alloc_size(size), extra_info(-1) {
+// todo : 64bit align
+struct malloc_info : atomic::node {
+	malloc_info(int size) : alloc_size(size), extra_info(-1) {
 	}
 	long alloc_size;
 	long extra_info;
 };
 
-inline void* AttachMallocInfo(MallocInfo* header, int size) {
-	new (header)MallocInfo(size);
+inline void* attach_malloc_info(malloc_info* header, int size) {
+	new (header)malloc_info(size);
 	return reinterpret_cast<void*>(++header);
 }
 
-inline MallocInfo* DetachMallocInfo(void* ptr) {
-	MallocInfo* header = reinterpret_cast<MallocInfo*>(ptr);
+inline malloc_info* detach_malloc_info(void* ptr) {
+	malloc_info* header = reinterpret_cast<malloc_info*>(ptr);
 	--header;
 	return header;
 }
 
-class MemoryBucket {
+class memory_bucket {
 public:
-	MemoryBucket(unsigned long size);
+	memory_bucket(unsigned long size);
 
-	MallocInfo* Pop();
-	void Push(MallocInfo* ptr);
+	malloc_info* pop();
+	void push(malloc_info* ptr);
 
 private:
-	atomic::Stack free_list;
+	atomic::stack free_list;
 
 	const unsigned long alloc_size;
 	long alloc_count;
 };
 
-/// global로만 사용하기 때문에 쿨하게 소멸자 정의 안함
-class MemoryPool {
+// only used global
+class memory_pool {
 public:
-	MemoryPool();
+	memory_pool();
 
-	void* Allocate(int size);
-	void Deallocate(void* ptr, long extra_info);
+	void* allocate(int size);
+	void deallocate(void* ptr, long extra_info);
 
 private:
-	/// todo : 사이즈 쫌 조절해야함
-	enum Config {
-		/// 함부로 바꾸면 안됨. 철저히 계산후 바꿀 것
-		MAX_BUCKET_COUNT = 1024 / 32 + 1024 / 128 + 2048 / 256, ///< ~1024까지 32단위, ~2048까지 128단위, ~4096까지 256단위
+	enum {
+		MAX_BUCKET_COUNT = 1024 / 32 + 1024 / 128 + 2048 / 256,
 		MAX_ALLOC_SIZE = 4096
 	};
 
-	/// 원하는 크기의 메모리를 가지고 있는 풀에 O(1) access를 위한 테이블
-	MemoryBucket* bucket_table[MAX_ALLOC_SIZE + 1];
+	// for O(1) access
+	memory_bucket* bucket_table[MAX_ALLOC_SIZE + 1];
 };
 
-extern MemoryPool* Pool;
-/// 요놈을 상속 받아야만 xnew/xdelete 사용할 수 있게...
+extern memory_pool* pool;
 //struct PooledAllocatable {};
 
 template <class T, class... Args>
 T* xnew(Args&&... args) {
 	//static_assert(true == std::is_convertible<T, PooledAllocatable>::value, "[fs::memory-pool.h] only allowed when PooledAllocatable");
 
-	void* alloc = Pool->Allocate(sizeof(T));
+	void* alloc = pool->allocate(sizeof(T));
 	new (alloc)T(std::forward<Args>(args)...);
 	return reinterpret_cast<T*>(alloc);
 }
@@ -77,6 +75,6 @@ void xdelete(T* object) {
 	//static_assert(true == std::is_convertible<T, PooledAllocatable>::value, "[fs::memory-pool.h] only allowed when PooledAllocatable");
 
 	object->~T();
-	Pool->Deallocate(object, sizeof(T));
+	pool->deallocate(object, sizeof(T));
 }
 }

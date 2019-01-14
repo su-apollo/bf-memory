@@ -1,5 +1,7 @@
 #include "allocator.hpp"
 
+#ifdef BF_WINDOWS_FAMILY
+
 #include <Windows.h>
 #include <iostream>
 #include <fcntl.h>
@@ -25,7 +27,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	CreateConsole();
 
-	bf::Pool = new bf::MemoryPool;
+	bf::pool = new bf::memory_pool;
 
 	bf::vector<int> test;
 	test.push_back(1);
@@ -36,9 +38,11 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		std::cout << "test" << std::endl;
 	}
 
-	delete bf::Pool;
+	delete bf::pool;
 
 	system("PAUSE");
 	// Exit program
 	exit(EXIT_SUCCESS);
 }
+
+#endif

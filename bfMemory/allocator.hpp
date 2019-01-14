@@ -29,11 +29,11 @@ public:
 	struct rebind { typedef allocator<U> other; };
 
 	T* allocate(size_t n) {
-		return static_cast<T*>(Pool->Allocate((int)n*sizeof(T)));
+		return static_cast<T*>(pool->allocate((int)n*sizeof(T)));
 	}
 
 	void deallocate(T* ptr, size_t n) {
-		Pool->Deallocate(ptr, -1599);
+		pool->deallocate(ptr, -1599);
 	}
 };
 

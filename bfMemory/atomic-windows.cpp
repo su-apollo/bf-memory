@@ -2,44 +2,38 @@
 
 #if BF_WINDOWS_FAMILY
 #include <windows.h>
+#undef max
+#undef min
 
 namespace bf {
 namespace atomic {
-long Exchange(volatile long* d, long v)
-{
+long exchange(volatile long* d, long v) {
 	return (long)InterlockedExchange((volatile LONG*)d, (LONG)v);
 }
 
-void* ExchangePointer(volatile void** d, void* v)
-{
+void* exchange_pointer(volatile void** d, void* v) {
 	return InterlockedExchangePointer((volatile PVOID*)d, v);
 }
 
-long CompareExchange(volatile long* d, long e, long c)
-{
+long compare_exchange(volatile long* d, long e, long c) {
 	return (long)InterlockedCompareExchange((volatile LONG*)d, e, c);
 }
 
-void* CompareExchangePointer(volatile void** d, void* e, void* c)
-{
+void* compare_exchange_pointer(volatile void** d, void* e, void* c) {
 	return InterlockedCompareExchangePointer((volatile PVOID*)d, e, c);
 }
 
-long Increment(volatile long* v)
-{
+long increment(volatile long* v) {
 	return (long)InterlockedIncrement((volatile LONG*)v);
 }
 
-long Decrement(volatile long* v)
-{
+long decrement(volatile long* v) {
 	return (long)InterlockedDecrement((volatile LONG*)v);
 }
 
-long Add(volatile long* v, long d)
-{
+long add(volatile long* v, long d) {
 	LONG n, o;
-	do
-	{
+	do {
 		o = *v;
 		n = o + d;
 
@@ -48,11 +42,9 @@ long Add(volatile long* v, long d)
 	return n;
 }
 
-long Max(volatile long* a, long b)
-{
+long max(volatile long* a, long b) {
 	LONG n, o;
-	do
-	{
+	do {
 		o = *a;
 
 		if (b > o)
