@@ -1,7 +1,7 @@
 #pragma once
 #include "atomic-stack.hpp"
-#include "memory.h"
-#include "atomic.h"
+#include "memory.hpp"
+#include "atomic.hpp"
 
 #include <memory>
 #include <cassert>

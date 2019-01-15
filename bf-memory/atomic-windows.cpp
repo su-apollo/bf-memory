@@ -1,4 +1,4 @@
-#include "atomic.h"
+#include "atomic.hpp"
 
 #if BF_WINDOWS_FAMILY
 #include <windows.h>

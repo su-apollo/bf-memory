@@ -1,4 +1,4 @@
-#include "atomic"
+#include "atomic.hpp"
 
 #if BF_UNIX_FAMILY
 #define PAUSE() asm("nop")
@@ -48,7 +48,7 @@ long exchange(volatile long* d, long v) {
 		o = *d;
 		n = v;
 
-	} while (compare_exchange(d, n, o != o);
+	} while (compare_exchange(d, n, o) != o);
 
 	return o;
 }
