@@ -1,6 +1,6 @@
 #include "memory-pool.hpp"
+#include "memory.hpp"
 
-#include <cstdlib>
 #include <cstring>
 
 namespace bf {
@@ -15,7 +15,7 @@ malloc_info* memory_bucket::pop() {
 	malloc_info* mem = static_cast<malloc_info*>(atomic::pop(free_list));
 
 	if (mem == nullptr) {
-		mem = reinterpret_cast<malloc_info*>(aligned_alloc(BF_MEMORY_ALLOCATION_ALIGNMENT, alloc_size));
+		mem = reinterpret_cast<malloc_info*>(bf::aligned_alloc(alloc_size));
 	}
 	else {
 		if (mem->alloc_size != 0)
@@ -66,7 +66,7 @@ void* memory_pool::allocate(int size) {
 	int real_size = size + sizeof(malloc_info);
 
 	if (real_size > MAX_ALLOC_SIZE) {
-		header = reinterpret_cast<malloc_info*>(aligned_alloc(BF_MEMORY_ALLOCATION_ALIGNMENT, real_size));
+		header = reinterpret_cast<malloc_info*>(bf::aligned_alloc(real_size));
 	}
 	else {
 		header = bucket_table[real_size]->pop();
@@ -85,7 +85,7 @@ void memory_pool::deallocate(void* ptr, long extra_info) {
 		throw std::bad_alloc();
 
 	if (real_size > MAX_ALLOC_SIZE) {
-		free(header);
+		bf::free(header);
 	}
 	else {
 		bucket_table[real_size]->push(header);
