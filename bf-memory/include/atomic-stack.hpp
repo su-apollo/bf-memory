@@ -5,10 +5,12 @@ namespace bf {
 namespace atomic {
 // none allocator stack
 struct node {
+	node() : next(nullptr) {}
 	node* next;
 };
 
 struct head {
+	head() : next(nullptr) {}
 	node* next;
 };
 
