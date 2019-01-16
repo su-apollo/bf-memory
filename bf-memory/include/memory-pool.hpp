@@ -7,7 +7,7 @@
 #include <cassert>
 
 namespace bf {
-// todo : 64bit align
+// todo : 64byte align
 struct malloc_info : atomic::node {
 	malloc_info(int size) : alloc_size(size), extra_info(-1) {
 	}

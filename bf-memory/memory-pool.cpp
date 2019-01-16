@@ -1,5 +1,7 @@
 #include "memory-pool.hpp"
 
+#include <string.h>
+
 namespace bf {
 memory_pool* pool = nullptr;
 
@@ -74,9 +76,9 @@ void* memory_pool::allocate(int size) {
 
 void memory_pool::deallocate(void* ptr, long extra_info) {
 	malloc_info* header = detach_malloc_info(ptr);
-	header->extra_info = extra_info; ///< �ֱ� �Ҵ翡 ���õ� ���� ��Ʈ
+	header->extra_info = extra_info; // hint
 
-	long real_size = atomic::exchange(&header->alloc_size, 0); ///< �ι� ���� üũ ����
+	long real_size = atomic::exchange(&header->alloc_size, 0);
 
 	if (real_size <= 0)
 		throw std::bad_alloc();

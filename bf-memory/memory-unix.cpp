@@ -1,6 +1,7 @@
 #include "memory.hpp"
 
 #if BF_UNIX_FAMILY
+#include <malloc.h>
 
 namespace bf {
 void* aligned_alloc(std::size_t size) {
