@@ -1,6 +1,7 @@
 #include "memory-pool.hpp"
 
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 namespace bf {
 memory_pool* pool = nullptr;
@@ -14,7 +15,7 @@ malloc_info* memory_bucket::pop() {
 	malloc_info* mem = static_cast<malloc_info*>(atomic::pop(free_list));
 
 	if (mem == nullptr) {
-		mem = reinterpret_cast<malloc_info*>(aligned_alloc(alloc_size));
+		mem = reinterpret_cast<malloc_info*>(aligned_alloc(BF_MEMORY_ALLOCATION_ALIGNMENT, alloc_size));
 	}
 	else {
 		if (mem->alloc_size != 0)
@@ -31,7 +32,7 @@ void memory_bucket::push(malloc_info* ptr) {
 }
 
 memory_pool::memory_pool() {
-	memset(bucket_table, 0, sizeof(bucket_table));
+	std::memset(bucket_table, 0, sizeof(bucket_table));
 
 	int recent = 0;
 
@@ -65,7 +66,7 @@ void* memory_pool::allocate(int size) {
 	int real_size = size + sizeof(malloc_info);
 
 	if (real_size > MAX_ALLOC_SIZE) {
-		header = reinterpret_cast<malloc_info*>(aligned_alloc(real_size));
+		header = reinterpret_cast<malloc_info*>(aligned_alloc(BF_MEMORY_ALLOCATION_ALIGNMENT, real_size));
 	}
 	else {
 		header = bucket_table[real_size]->pop();
@@ -84,7 +85,7 @@ void memory_pool::deallocate(void* ptr, long extra_info) {
 		throw std::bad_alloc();
 
 	if (real_size > MAX_ALLOC_SIZE) {
-		aligned_free(header);
+		free(header);
 	}
 	else {
 		bucket_table[real_size]->push(header);

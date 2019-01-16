@@ -49,7 +49,11 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #else
 
 int main() {
+	std::cout << "Hello World!" << std::endl;
+
 	bf::pool = new bf::memory_pool;
+
+	std::cout << "malloc_info : " << alignof(bf::malloc_info) << std::endl;
 
 	bf::vector<int> test;
 

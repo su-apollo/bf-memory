@@ -1,29 +1,18 @@
 #include "memory.hpp"
 
 #if BF_UNIX_FAMILY
-#include <malloc.h>
 
 namespace bf {
 void* aligned_alloc(std::size_t size) {
-#if BF_APPLE_FAMILY
-// Always 16byte memory align on apple side.
-	return ::malloc(size);
-#else
-	return ::memalign(BF_MEMORY_ALLOCATION_ALIGNMENT, size);	
-#endif
+	return aligned_alloc(BF_MEMORY_ALLOCATION_ALIGNMENT, size);
 }
 
 void* aligned_alloc(std::size_t alignment, std::size_t size) {
-#if BF_APPLE_FAMILY
-// Always 16byte memory align on apple side.
-	return ::malloc(size);
-#else
-	return ::memalign(alignment, size);
-#endif
+	return aligned_alloc(alignment, size);
 }
 
 void aligned_free(void* ptr) {
-	::free(ptr);
+	free(ptr);
 }
 }
 #endif

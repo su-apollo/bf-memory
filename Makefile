@@ -7,7 +7,7 @@ LIB = bf-memory/bf-memory.a
 INC = -I./bf-memory/include
 
 all : lib
-	$(CXX) $(CXXFLAGS) -g $(SRCS) $(LIB) $(INC)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS) $(LIB) $(INC)
 
 lib : 
 	cd bf-memory && make

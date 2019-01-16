@@ -1,14 +1,16 @@
 #pragma once
 #include "atomic-stack.hpp"
-#include "memory.hpp"
 #include "atomic.hpp"
 
 #include <memory>
 #include <cassert>
 
 namespace bf {
-// todo : 64byte align
+#if BF_P64_FAMILY
+struct alignas(64) malloc_info : atomic::node {
+#else
 struct malloc_info : atomic::node {
+#endif
 	malloc_info(int size) : alloc_size(size), extra_info(-1) {
 	}
 	long alloc_size;
