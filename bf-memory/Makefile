@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++11
 AR = ar
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-TARGET = bf-math.a
+TARGET = bf-memory.a
 INC = -I./include
 
 all : $(TARGET)

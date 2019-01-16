@@ -2,17 +2,17 @@ CXX = g++
 CXXFLAGS = -std=c++11
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-TARGET = test
-LIBS = -lbf-math
-LIB_DIR = -L./bf-math
-INC = -I./bf-math/include
+TARGET = test.out
+LIB = bf-memory/bf-memory.a
+INC = -I./bf-memory/include
 
-all : $(TARGET)
-	$(CXX) -o $(CXXFLAGS) $(OBJS) $(INC) $(LIB_DIR) $(LIBS)
+all : lib
+	$(CXX) $(CXXFLAGS) -g $(SRCS) $(LIB) $(INC)
 
-$(TARGET) :
-	$(CXX) -c $(CXXFLAGS) $(SRCS) $(INC) $(LIB_DIR) $(LIBS)
+lib : 
+	cd bf-memory && make
 
 clean :
 	rm -f $(TARGET)
 	rm -f *.o
+	cd bf-memory && make clean

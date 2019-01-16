@@ -1,9 +1,10 @@
 #include "allocator.hpp"
 
-#ifdef BF_WINDOWS_FAMILY
+#include <iostream>
+
+#if BF_WINDOWS_FAMILY
 
 #include <Windows.h>
-#include <iostream>
 #include <fcntl.h>
 #include <io.h>
 
@@ -43,6 +44,26 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	system("PAUSE");
 	// Exit program
 	exit(EXIT_SUCCESS);
+}
+
+#else
+
+int main() {
+	bf::pool = new bf::memory_pool;
+
+	bf::vector<int> test;
+
+	test.push_back(1);
+	test.push_back(2);
+	test.push_back(3);
+
+	for (auto i : test) {
+		std::cout << "test" << std::endl;
+	}
+
+	delete bf::pool;
+
+	return 0;	
 }
 
 #endif

@@ -2,6 +2,7 @@
 *.o
 *.a
 *.out
+*.out.dSYM
 
 # User-specific files
 *.suo

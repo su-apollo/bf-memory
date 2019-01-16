@@ -4,9 +4,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "echo",
+            "label": "test",
             "type": "shell",
-            "command": "echo Hello"
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
