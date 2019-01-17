@@ -1,0 +1,23 @@
+version: '3'
+services:
+  make:
+    build:
+      context: .
+      dockerfile: make.dockerfile
+    volumes:
+      - ./trunk:/trunk
+      - data-volumn:/trunk/output
+    working_dir: /trunk
+    command:
+      make
+  run:
+    depends_on:
+      - make
+    image: ubuntu:16.04
+    volumes:
+      - data-volumn:/work
+    working_dir: /work
+    command: ./test.out
+        
+volumes:
+  data-volumn:

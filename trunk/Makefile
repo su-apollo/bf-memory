@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++11
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-TARGET = test.out
+TARGET = output/test.out
 LIB = bf-memory/bf-memory.a
 INC = -I./bf-memory/include
 
