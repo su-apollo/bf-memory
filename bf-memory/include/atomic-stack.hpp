@@ -9,33 +9,28 @@ struct node {
 	node* next;
 };
 
-struct head {
-	head() : next(nullptr) {}
-	node* next;
-};
-
 struct stack {
-	std::atomic<head> header;
+	stack() : head(nullptr) {}
+	std::atomic<node*> head;
 };
 
 inline void push(stack& s, node* n) {
-	head prev = s.header.load();
-	head now;
+	node* prev = s.head.load();
 	do {
-		now.next = n;
-	} while (!s.header.compare_exchange_weak(prev, now));
+		n->next = prev;
+	} while (!s.head.compare_exchange_weak(prev, n));
 }
 
 inline node* pop(stack& s) {
-	head prev = s.header.load();
-	head now;
+	node* prev = s.head.load();
+	node* n = nullptr;
 	do {
-		if (prev.next == nullptr)
+		if (prev == nullptr)
 			return nullptr;
 
-		now.next = prev.next->next;
-	} while (!s.header.compare_exchange_weak(prev, now));
-	return prev.next;
+		n = prev->next;
+	} while (!s.head.compare_exchange_weak(prev, n));
+	return prev;
 }
 }
 }

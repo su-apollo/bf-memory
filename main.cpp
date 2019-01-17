@@ -48,12 +48,35 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 #else
 
+struct node : bf::atomic::node {
+	node(int v) : value(v) {}
+	int value;
+};
+
 int main() {
 	std::cout << "Hello World!" << std::endl;
 
 	bf::pool = new bf::memory_pool;
 
 	std::cout << "malloc_info : " << alignof(bf::malloc_info) << std::endl;
+
+	bf::atomic::stack s;
+	node t1(1);
+	node t2(3);
+	node t3(2);
+	node t4(4);
+
+	bf::atomic::push(s, &t1);
+	bf::atomic::push(s, &t2);
+	bf::atomic::push(s, &t3);
+	bf::atomic::push(s, &t4);
+
+	node* head = nullptr;
+	do {
+		head = static_cast<node*>(bf::atomic::pop(s));
+		if (head != nullptr)
+			std::cout << "head : " << head->value << std::endl;
+	} while (head != nullptr);
 
 	bf::vector<int> test;
 
