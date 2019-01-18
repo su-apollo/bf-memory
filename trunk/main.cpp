@@ -114,7 +114,7 @@ void test_thread_safe() {
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
 
-		for (auto i = 0 ; i < 10000 ; ++i) {
+		for (auto i = 0 ; i < 10 ; ++i) {
 			std::cout << "call task" << std::endl;
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
@@ -129,7 +129,7 @@ void test_thread_safe() {
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
 
-		for (auto i = 0 ; i < 10000 ; ++i) {
+		for (auto i = 0 ; i < 10 ; ++i) {
 			std::cout << "call async" << std::endl;
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
@@ -144,7 +144,7 @@ void test_thread_safe() {
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
 
-		for (auto i = 0 ; i < 10000 ; ++i) {
+		for (auto i = 0 ; i < 10 ; ++i) {
 			std::cout << "call thread" << std::endl;
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;

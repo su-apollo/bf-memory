@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -pthread -std=c++11
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
-TARGET = output/test.out
+TARGET = test.out
 LIB = bf-memory/bf-memory.a
 INC = -I./bf-memory/include
 
