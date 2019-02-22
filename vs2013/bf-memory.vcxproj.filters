@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{fe8adb95-7d52-41b3-a7c2-d88ff5550332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{dd1ebeb0-1b2e-4910-a03f-a814f708ae49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\bf-memory\header\allocator.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bf-memory\header\atomic.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bf-memory\header\atomic-stack.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bf-memory\header\memory.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bf-memory\header\memory-pool.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bf-memory\header\preprocessor.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\bf-memory\source\atomic-unix.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bf-memory\source\atomic-windows.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bf-memory\source\memory-pool.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bf-memory\source\memory-unix.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bf-memory\source\memory-windows.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
