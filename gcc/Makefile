@@ -3,16 +3,16 @@ CXXFLAGS = -pthread -std=c++11
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
 TARGET = test.out
-LIB = bf-memory/bf-memory.a
-INC = -I./bf-memory/include
+LIB = ../bf-memory/bf-memory.a
+INC = -I../bf-memory/header
 
 all : lib
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS) $(LIB) $(INC)
 
 lib : 
-	cd bf-memory && make
+	cd ../bf-memory && make
 
 clean :
 	rm -f $(TARGET)
 	rm -f *.o
-	cd bf-memory && make clean
+	cd ../bf-memory && make clean

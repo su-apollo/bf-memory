@@ -1,13 +1,13 @@
 CXX = g++
 CXXFLAGS = -std=c++11
 AR = ar
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
+SRCS = $(wildcard source/*.cpp)
+OBJS = $(patsubst source/%.cpp, %.o, $(SRCS))
 TARGET = bf-memory.a
-INC = -I./include
+INC = -I./header
 
 all : $(TARGET)
-	ar rcv $(TARGET) $(OBJS)
+	$(AR) rcv $(TARGET) $(OBJS)
 
 $(TARGET) :
 	$(CXX) -c $(CXXFLAGS) $(SRCS) $(INC)
