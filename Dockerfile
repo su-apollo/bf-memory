@@ -4,8 +4,9 @@ RUN apt-get update && apt-get install -y \
     g++ \
     make
 
-COPY /trunk /trunk
-WORKDIR /trunk
+COPY /gcc /gcc
+COPY /bf-memory /bf-memory
+WORKDIR /gcc
 
 RUN make
 
