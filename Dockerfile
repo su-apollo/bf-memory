@@ -16,5 +16,5 @@ FROM ubuntu:16.04
 RUN mkdir /work
 WORKDIR /work
 
-COPY --from=builder /trunk/test.out ./test.out
+COPY --from=builder /gcc/test.out ./test.out
 CMD ["./test.out"]
