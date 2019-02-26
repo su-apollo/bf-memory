@@ -1,18 +1,26 @@
 CXX = g++
-CXXFLAGS = -pthread -std=c++11
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
-TARGET = test.out
-LIB = ../bf-memory/bf-memory.a
+CXXFLAGS = -std=c++11
+AR = ar
+
+MAIN = main.cpp
+SRCS = $(wildcard ../bf-memory/source/*.cpp)
+OBJS = $(patsubst ../bf-memory/source/%.cpp, %.o, $(SRCS))
 INC = -I../bf-memory/header
 
-all : lib
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS) $(LIB) $(INC)
+PROJECT = bf-memory
+TARGET = test.out
+LIB = bf-memory.a
 
-lib : 
-	cd ../bf-memory && make
+all : $(LIB)
+	$(CXX) $(CXXFLAGS) -pthread -o $(TARGET) $(MAIN) $(LIB) $(INC)
+
+$(LIB) : $(PROJECT)
+	$(AR) rcv $(LIB) $(OBJS)
+
+$(PROJECT) :
+	$(CXX) -c $(CXXFLAGS) $(SRCS) $(INC)
 
 clean :
 	rm -f $(TARGET)
+	rm -f $(LIB)
 	rm -f *.o
-	cd ../bf-memory && make clean
