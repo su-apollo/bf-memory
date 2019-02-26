@@ -1,3 +1,9 @@
+# cmake results
+/CMakeCache.txt
+/cmake_install.cmake
+/CMakeFiles/
+/Makefile
+
 # g++ build results
 *.o
 *.a
