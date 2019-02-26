@@ -1,3 +1,7 @@
+branches:
+  only:
+  - dev
+
 matrix:
   include:
     - os: linux
@@ -30,6 +34,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - cd cmake && cmake CMakeList.txt
 
 script:
-  - cd cmake && make
+  - make

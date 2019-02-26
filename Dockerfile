@@ -2,12 +2,13 @@ FROM ubuntu:16.04 as builder
 
 RUN apt-get update && apt-get install -y \
     g++ \
-    make
+    cmake
 
 COPY /cmake /cmake
 COPY /bf-memory /bf-memory
 WORKDIR /cmake
 
+RUN cmake CMakeLists.txt
 RUN make
 
 
