@@ -1,8 +1,8 @@
 # cmake results
-/CMakeCache.txt
-/cmake_install.cmake
-/CMakeFiles/
-/Makefile
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
+Makefile
 
 # g++ build results
 *.o
