@@ -10,19 +10,19 @@ matrix:
             - g++-5
       language: cpp
       env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-5"
+        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
     - os: linux
       dist: xenial
       addons:
         apt:
           sources:
-            - llvm-toolchain-trusty-5.0
+            - llvm-toolchain-trusty-7.0
           packages:
-            - clang-5.0
+            - clang-7.0
       language: cpp
       env:
-        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+        - MATRIX_EVAL="CC=clang-7.0 && CXX=clang++-7.0"
 
     - os: osx
       osx_image: xcode10.1
