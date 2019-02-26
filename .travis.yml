@@ -1,3 +1,7 @@
+branches:
+  only:
+  - dev
+
 matrix:
   include:
     - os: linux
