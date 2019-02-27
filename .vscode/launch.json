@@ -8,13 +8,17 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/test.out",
+            "program": "${workspaceFolder}/cmake/test.out",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/cmake",
             "environment": [],
             "externalConsole": true,
-            "MIMode": "lldb"
-        },
+            "MIMode": "lldb",
+            "logging": { 
+                "trace": true, 
+                "traceResponse": true 
+            }
+        }
     ]
 }
