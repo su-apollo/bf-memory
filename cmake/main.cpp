@@ -15,15 +15,16 @@
 void CreateConsole() {
 	if (::AllocConsole())
 	{
-		int hCrt = ::_open_osfhandle((intptr_t) ::GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
-		FILE *hf = ::_fdopen(hCrt, "w");
-		*stdout = *hf;
-		::setvbuf(stdout, NULL, _IONBF, 0);
+		auto hCrt = ::_open_osfhandle((intptr_t) ::GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+		auto *hf = ::_fdopen(hCrt, "w");
+		auto so = stdout, se = stderr;
+		*so = *hf;
+		::setvbuf(stdout, nullptr, _IONBF, 0);
 
 		hCrt = ::_open_osfhandle((intptr_t) ::GetStdHandle(STD_ERROR_HANDLE), _O_TEXT);
 		hf = ::_fdopen(hCrt, "w");
-		*stderr = *hf;
-		::setvbuf(stderr, NULL, _IONBF, 0);
+		*se = *hf;
+		::setvbuf(stderr, nullptr, _IONBF, 0);
 	}
 }
 
@@ -39,7 +40,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	test.push_back(2);
 	test.push_back(3);
 
-	for (auto i : test) {
+	for ([[maybe_unused]] auto _ : test) {
 		std::cout << "test" << std::endl;
 	}
 
@@ -109,7 +110,7 @@ struct test {
 };
 
 void test_thread_safe() {
-	std::packaged_task<int()> task([]{ 
+	std::packaged_task<int()> task([]{
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
@@ -119,12 +120,12 @@ void test_thread_safe() {
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
-		return 7; 
+		return 7;
 	});
     std::future<int> f1 = task.get_future();
     std::thread t(std::move(task));
- 
-    std::future<int> f2 = std::async(std::launch::async, []{ 
+
+    std::future<int> f2 = std::async(std::launch::async, []{
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
@@ -134,12 +135,12 @@ void test_thread_safe() {
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
-		return 8; 
+		return 8;
 	});
- 
+
     std::promise<int> p;
     std::future<int> f3 = p.get_future();
-    std::thread( [&p]{ 
+    std::thread( [&p]{
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<> dis(1, 100);
@@ -149,9 +150,9 @@ void test_thread_safe() {
 			auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
-		p.set_value_at_thread_exit(9); 
+		p.set_value_at_thread_exit(9);
 	}).detach();
- 
+
     std::cout << "Waiting..." << std::flush;
     f1.wait();
     f2.wait();
@@ -171,7 +172,7 @@ int main() {
 	test_thread_safe();
 
 	delete bf::pool;
-	return 0;	
+	return 0;
 }
 
 #endif

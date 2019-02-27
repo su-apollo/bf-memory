@@ -37,7 +37,7 @@ memory_pool::memory_pool() {
 	int recent = 0;
 
 	for (int i = 32; i < 1024; i += 32) {
-		memory_bucket* pool = new memory_bucket(i);
+		auto pool = new memory_bucket(i);
 		for (int j = recent + 1; j <= i; ++j) {
 			bucket_table[j] = pool;
 		}
@@ -45,7 +45,7 @@ memory_pool::memory_pool() {
 	}
 
 	for (int i = 1024; i < 2048; i += 128) {
-		memory_bucket* pool = new memory_bucket(i);
+		auto pool = new memory_bucket(i);
 		for (int j = recent + 1; j <= i; ++j) {
 			bucket_table[j] = pool;
 		}
@@ -53,7 +53,7 @@ memory_pool::memory_pool() {
 	}
 
 	for (int i = 2048; i <= 4096; i += 256) {
-		memory_bucket* pool = new memory_bucket(i);
+		auto pool = new memory_bucket(i);
 		for (int j = recent + 1; j <= i; ++j) {
 			bucket_table[j] = pool;
 		}
@@ -63,7 +63,7 @@ memory_pool::memory_pool() {
 
 void* memory_pool::allocate(int size) {
 	malloc_info* header = nullptr;
-	int real_size = size + sizeof(malloc_info);
+	auto real_size = size + sizeof(malloc_info);
 
 	if (real_size > MAX_ALLOC_SIZE) {
 		header = reinterpret_cast<malloc_info*>(bf::aligned_alloc(real_size));
