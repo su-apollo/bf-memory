@@ -9,39 +9,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\bf-memory\header\allocator.hpp">
+    <ClInclude Include="..\header\allocator.hpp">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\bf-memory\header\atomic.hpp">
+    <ClInclude Include="..\header\atomic.hpp">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\bf-memory\header\atomic-stack.hpp">
+    <ClInclude Include="..\header\atomic-stack.hpp">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\bf-memory\header\memory.hpp">
+    <ClInclude Include="..\header\memory.hpp">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\bf-memory\header\memory-pool.hpp">
+    <ClInclude Include="..\header\memory-pool.hpp">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\bf-memory\header\preprocessor.hpp">
+    <ClInclude Include="..\header\preprocessor.hpp">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\bf-memory\source\atomic-unix.cpp">
+    <ClCompile Include="..\source\atomic-unix.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\bf-memory\source\atomic-windows.cpp">
+    <ClCompile Include="..\source\atomic-windows.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\bf-memory\source\memory-pool.cpp">
+    <ClCompile Include="..\source\memory-pool.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\bf-memory\source\memory-unix.cpp">
+    <ClCompile Include="..\source\memory-unix.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\bf-memory\source\memory-windows.cpp">
+    <ClCompile Include="..\source\memory-windows.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

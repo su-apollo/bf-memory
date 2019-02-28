@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\bf-memory\header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -57,7 +57,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\bf-memory\header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -66,19 +66,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\bf-memory\header\allocator.hpp" />
-    <ClInclude Include="..\bf-memory\header\atomic-stack.hpp" />
-    <ClInclude Include="..\bf-memory\header\atomic.hpp" />
-    <ClInclude Include="..\bf-memory\header\memory-pool.hpp" />
-    <ClInclude Include="..\bf-memory\header\memory.hpp" />
-    <ClInclude Include="..\bf-memory\header\preprocessor.hpp" />
+    <ClInclude Include="..\header\allocator.hpp" />
+    <ClInclude Include="..\header\atomic-stack.hpp" />
+    <ClInclude Include="..\header\atomic.hpp" />
+    <ClInclude Include="..\header\memory-pool.hpp" />
+    <ClInclude Include="..\header\memory.hpp" />
+    <ClInclude Include="..\header\preprocessor.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\bf-memory\source\atomic-unix.cpp" />
-    <ClCompile Include="..\bf-memory\source\atomic-windows.cpp" />
-    <ClCompile Include="..\bf-memory\source\memory-pool.cpp" />
-    <ClCompile Include="..\bf-memory\source\memory-unix.cpp" />
-    <ClCompile Include="..\bf-memory\source\memory-windows.cpp" />
+    <ClCompile Include="..\source\atomic-unix.cpp" />
+    <ClCompile Include="..\source\atomic-windows.cpp" />
+    <ClCompile Include="..\source\memory-pool.cpp" />
+    <ClCompile Include="..\source\memory-unix.cpp" />
+    <ClCompile Include="..\source\memory-windows.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,25 +12,25 @@
 #include <fcntl.h>
 #include <io.h>
 
-void CreateConsole() {
+void create_console() {
 	if (::AllocConsole())
 	{
-		int hCrt = ::_open_osfhandle((intptr_t) ::GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
-		FILE *hf = ::_fdopen(hCrt, "w");
+		auto h_crt = ::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT);
+		auto hf = ::_fdopen(h_crt, "w");
 		*stdout = *hf;
-		::setvbuf(stdout, NULL, _IONBF, 0);
+		::setvbuf(stdout, nullptr, _IONBF, 0);
 
-		hCrt = ::_open_osfhandle((intptr_t) ::GetStdHandle(STD_ERROR_HANDLE), _O_TEXT);
-		hf = ::_fdopen(hCrt, "w");
+		h_crt = ::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT);
+		hf = ::_fdopen(h_crt, "w");
 		*stderr = *hf;
-		::setvbuf(stderr, NULL, _IONBF, 0);
+		::setvbuf(stderr, nullptr, _IONBF, 0);
 	}
 }
 
 // program entry
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int CALLBACK WinMain()
 {
-	CreateConsole();
+	create_console();
 
 	bf::pool = new bf::memory_pool;
 
