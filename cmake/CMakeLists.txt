@@ -9,8 +9,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
 set(OUTPUT test.out)
 set(LIB bf-memory)
-set(INCLUDE ../bf-memory/header)
-aux_source_directory(../bf-memory/source SOURCE)
+set(INCLUDE ../header)
+aux_source_directory(../source SOURCE)
 set(MAIN main.cpp)
 
 add_library(${LIB} ${SOURCE})

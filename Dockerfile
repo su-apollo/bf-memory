@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
     cmake
 
 COPY /cmake /cmake
-COPY /bf-memory /bf-memory
+COPY /header /header
+COPY /source /source
 WORKDIR /cmake
 
 RUN cmake CMakeLists.txt
