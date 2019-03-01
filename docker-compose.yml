@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  bf-test:
+    container_name: bf-test
+    image: bf-test
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - ./env/local.env

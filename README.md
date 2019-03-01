@@ -5,3 +5,13 @@ Simple memory pool for cpp application.
 
 
 [travis-url]: https://travis-ci.com/apollohpp/bf-memory
+
+
+#### Test
+
+* Linux & macOS  
+> $ ./run.sh
+
+
+* Windows  
+> \> .\run.sh
