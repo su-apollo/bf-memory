@@ -1,19 +1,16 @@
-FROM ubuntu:16.04 as builder
-
-RUN apt-get update && apt-get install -y \
-    g++ \
-    cmake
+FROM rikorose/gcc-cmake:gcc-8 as builder
 
 COPY /cmake /cmake
 COPY /header /header
 COPY /source /source
+
 WORKDIR /cmake
 
 RUN cmake CMakeLists.txt
 RUN make
 
 
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 RUN mkdir /work
 WORKDIR /work
