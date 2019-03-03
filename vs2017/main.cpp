@@ -141,6 +141,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc, LPSTR CmdParam
 	create_console();
 
 	std::cout << "Hello World!" << std::endl;
+
 	bf::pool = new bf::memory_pool;
 
 	test_stack();
@@ -149,7 +150,6 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc, LPSTR CmdParam
 
 	delete bf::pool;
 
-	system("PAUSE");
 	// Exit program
 	exit(EXIT_SUCCESS);
 }
