@@ -6,8 +6,6 @@
 #include <numeric>
 #include <random>
 
-#if BF_WINDOWS_FAMILY
-
 #include <Windows.h>
 #include <fcntl.h>
 #include <io.h>
@@ -15,51 +13,26 @@
 void create_console() {
 	if (::AllocConsole())
 	{
-		auto h_crt = ::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT);
-		auto hf = ::_fdopen(h_crt, "w");
-		*stdout = *hf;
+		auto h_crt = ::_open_osfhandle(intptr_t(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT);
+		auto *hf = ::_fdopen(h_crt, "w");
+		const auto so = stdout;
+		const auto se = stderr;
+		*so = *hf;
 		::setvbuf(stdout, nullptr, _IONBF, 0);
 
-		h_crt = ::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT);
+		h_crt = ::_open_osfhandle(intptr_t(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT);
 		hf = ::_fdopen(h_crt, "w");
-		*stderr = *hf;
+		*se = *hf;
 		::setvbuf(stderr, nullptr, _IONBF, 0);
 	}
 }
 
-// program entry
-int CALLBACK WinMain()
-{
-	create_console();
-
-	bf::pool = new bf::memory_pool;
-
-	bf::vector<int> test;
-	test.push_back(1);
-	test.push_back(2);
-	test.push_back(3);
-
-	for (auto i : test) {
-		std::cout << "test" << std::endl;
-	}
-
-	delete bf::pool;
-
-	system("PAUSE");
-	// Exit program
-	exit(EXIT_SUCCESS);
-}
-
-#else
-
 struct node : bf::atomic::node {
-	node(int v) : value(v) {}
+	explicit node(const int v) : value(v) {}
 	int value;
 };
 
 void test_stack() {
-	std::cout << "malloc_info : " << alignof(bf::malloc_info) << std::endl;
-
 	bf::atomic::stack s;
 	node t1(1);
 	node t2(3);
@@ -71,9 +44,9 @@ void test_stack() {
 	bf::atomic::push(s, &t3);
 	bf::atomic::push(s, &t4);
 
-	node* head = nullptr;
+	node* head;
 	do {
-		head = static_cast<node*>(bf::atomic::pop(s));
+		head = reinterpret_cast<node*>(bf::atomic::pop(s));
 		if (head != nullptr)
 			std::cout << "head : " << head->value << std::endl;
 	} while (head != nullptr);
@@ -83,73 +56,57 @@ void accumulate(bf::vector<int>::iterator first, bf::vector<int>::iterator last,
 
 	std::cout << "promise ref " << &accumulate_promise << std::endl;
 
-	int sum = std::accumulate(first, last, 0);
+	const auto sum = std::accumulate(first, last, 0);
 	accumulate_promise.set_value(sum);
 }
 
-void test_promise() {
-	bf::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
-	std::promise<int> accumulate_promise;
-	std::future<int> accumulate_future = accumulate_promise.get_future();
-
-	std::cout << "promise ref " << &accumulate_promise << std::endl;
-
-	std::thread work(accumulate, numbers.begin(), numbers.end(), std::move(accumulate_promise));
-
-	accumulate_future.wait();
-	std::cout << "acccumulate result " << accumulate_future.get() << std::endl;
-	work.join();
-}
-
 struct test {
-	test(int i) : value(i) {};
-	~test() = default;
-
+	explicit test(const int i) : value(i) {};
 	int value;
 };
 
 void test_thread_safe() {
-	std::packaged_task<int()> task([]{
+	auto task = std::packaged_task<int()>([]{
 		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(1, 100);
+		auto gen = std::mt19937(rd());
+		const auto dis = std::uniform_int_distribution<>(1, 100);
 
 		for (auto i = 0; i < 10; ++i) {
 			std::cout << "call task" << std::endl;
-			auto p = bf::make_unique<test>(dis(gen));
+			const auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
 		return 7;
 	});
-	std::future<int> f1 = task.get_future();
-	std::thread t(std::move(task));
+	auto f1 = task.get_future();
+	auto t = std::thread(std::move(task));
 
-	std::future<int> f2 = std::async(std::launch::async, []{
+	auto f2 = std::async(std::launch::async, []{
 		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(1, 100);
+		auto gen = std::mt19937(rd());
+		const auto dis = std::uniform_int_distribution<>(1, 100);
 
 		for (auto i = 0; i < 10; ++i) {
 			std::cout << "call async" << std::endl;
-			auto p = bf::make_unique<test>(dis(gen));
+			const auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
 		return 8;
 	});
 
-	std::promise<int> p;
-	std::future<int> f3 = p.get_future();
-	std::thread([&p]{
+	auto prom = std::promise<int>();
+	auto f3 = prom.get_future();
+	std::thread([&prom]{
 		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(1, 100);
+		auto gen = std::mt19937(rd());
+		const auto dis = std::uniform_int_distribution<>(1, 100);
 
 		for (auto i = 0; i < 10; ++i) {
 			std::cout << "call thread" << std::endl;
-			auto p = bf::make_unique<test>(dis(gen));
+			const auto p = bf::make_unique<test>(dis(gen));
 			std::cout << "value " << p->value << std::endl;
 		}
-		p.set_value_at_thread_exit(9);
+		prom.set_value_at_thread_exit(9);
 	}).detach();
 
 	std::cout << "Waiting..." << std::flush;
@@ -162,16 +119,21 @@ void test_thread_safe() {
 	t.join();
 }
 
-int main() {
+// program entry
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc, LPSTR CmdParam, int nCmdShow)
+{
+	create_console();
+
 	std::cout << "Hello World!" << std::endl;
+
 	bf::pool = new bf::memory_pool;
 
 	test_stack();
-	test_promise();
 	test_thread_safe();
 
 	delete bf::pool;
-	return 0;
-}
 
-#endif
+	system("PAUSE");
+	// Exit program
+	exit(EXIT_SUCCESS);
+}
