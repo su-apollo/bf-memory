@@ -5,6 +5,7 @@
   </component>
   <component name="CidrRootsConfiguration">
     <sourceRoots>
+      <file path="$PROJECT_DIR$/cmake" />
       <file path="$PROJECT_DIR$/header" />
       <file path="$PROJECT_DIR$/source" />
     </sourceRoots>
