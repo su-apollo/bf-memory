@@ -7,25 +7,6 @@
 #include <random>
 
 #include <Windows.h>
-#include <fcntl.h>
-#include <io.h>
-
-void create_console() {
-	if (::AllocConsole())
-	{
-		auto h_crt = ::_open_osfhandle(intptr_t(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT);
-		auto *hf = ::_fdopen(h_crt, "w");
-		const auto so = stdout;
-		const auto se = stderr;
-		*so = *hf;
-		::setvbuf(stdout, nullptr, _IONBF, 0);
-
-		h_crt = ::_open_osfhandle(intptr_t(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT);
-		hf = ::_fdopen(h_crt, "w");
-		*se = *hf;
-		::setvbuf(stderr, nullptr, _IONBF, 0);
-	}
-}
 
 struct node : bf::atomic::node {
 	explicit node(const int v) : value(v) {}
@@ -136,10 +117,7 @@ void test_thread_safe() {
 }
 
 // program entry
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc, LPSTR CmdParam, int nCmdShow)
-{
-	create_console();
-
+int main() {
 	std::cout << "Hello World!" << std::endl;
 
 	bf::pool = new bf::memory_pool;
@@ -150,6 +128,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstanc, LPSTR CmdParam
 
 	delete bf::pool;
 
+	system("PAUSE");
 	// Exit program
 	exit(EXIT_SUCCESS);
 }
